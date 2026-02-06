@@ -16,7 +16,7 @@ def parse_args():
 	return args_dict
 
 @xw.func
-def simple_test_fun(int not_used):
+def simple_test_func(int not_used):
     return "Hello"
 
 @xw.func
@@ -49,9 +49,9 @@ def BinomialTree(K, S, T, vol, r, principal, N):
 	for i in range(0, N+1):
 		FV = FV + expected_payout[i]
 	FV = FV * principal
-	print("FV = " + str(FV))
+	#print("FV = " + str(FV))
 	PV = np.exp(-r*T) * FV
-	print("PV = " + str(PV))
+	#print("PV = " + str(PV))
 	return PV
 
 #params = parse_args()
