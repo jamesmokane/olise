@@ -1,0 +1,24 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Run regression tests",
+			"type": "debugpy",
+			"request": "launch",
+			"program": "${workspaceFolder}/regression_tests.py",
+			"console": "integratedTerminal",
+			"justMyCode": true
+		},
+		{
+			"name": "Attach to Hermes Excel Workbook",
+			"type": "debugpy",
+			"request": "attach",
+			"program": "${workspaceFolder}/Excel_db_access.py",
+			"connect": {
+				"host": "localhost",
+				"port": 5678
+			}
+			"redirectOutput" : true,
+			"justMyCode": true
+		},
+		

@@ -1,0 +1,58 @@
+On Errors
+
+Once the formulas for the option Greeks were coded in Python, it became necessary to check that the calculated values were correct.
+
+So how did I do that?
+Initially I attempted to reconcile my calculated values against the values returned by online calculators.
+I was quite shocked to discover that those calculated values did not agree with each others.
+
+The spreadsheet Regression_tests__greeks_claculation.xlsm contains the comparison results from the top online calculators returned by the Google query "Call option greek calculator2"
+
+As the time of writing, the returned sites were
+
+	www.quantpie.co.uk
+	www.option-price.com
+	www.math.drexel.edu
+	pineify.app
+
+The delta and gamma results were in agreeement, the vega, theta and rho were not. 
+The value we calculated for PV was out in the 4th decimal place with all the other sites, which all agreed with it other.
+
+So if the calculators don't agree with each other, what are the correct values for the Greeks?
+
+Since there was a small difference in PV between us and all the other sites, that seemed like a good place to begin.
+The values chosen as input generated simple intermediate values (e.g. S = K = 2500, d1 = 0.35, d2 = 0.15) 
+which made it simple to reproduce in the spreadsheet.
+
+Our spreadsheet consistently disagreed with the other sites in the 4th decimal place (7th significant figure).
+The difference could be down to 
+* an error in our formula - but this seems unlikely since it remained close to the other sites to 6 significant figures.
+* a rounding error in our implementation - Excel use 15 digit numbers but it is possible that these sites used fewer digits in their calculations.
+* difference in the values return by our normal distribution cdf, and those used by the other sites.
+
+We attempted to see if the difference was down to rounding by using the Excel ROUND() to round intermediate steps in the calculation.
+Rounding intermediate steps did indeed cause the calculated values to move around, but it did not reproduce the values produced on the other sites. See coulmns J,K,L,M on the spreadsheet.
+Once precision reached 8 digits, out code consistently produced a PV of 261.2646.
+The only conclusion was the the difference was not down to simple rounding.
+ 
+The other possibility is that the implementation of the normal distribution cdf did not match our implementation.
+We began looking a various online cdf calculation, but after some checking, it appears that these were consistent with our implementation.
+However we do not have access to the code used to calculate the online Greeks so it is not possible to tell.
+ 
+At some point, we decided that the difference between PV values was acceptable. i.e. Our PV calculation was acceptable.
+By what about the other Greeks?
+ 
+Here we went back to the original purpose of the Greeks. 
+
+Delta = d(PV)/dS where d(PV) and d(S) are infinitesimals - an approximate value can be calculated by using a very small value for d(S).
+
+Similar calculations were made for Gamma, Vega, Theta, Rho. See "Using shifting the underlying" section of the spreadsheet.
+
+All the calculations agree roughly with our calculation, and the www.quantpie.co.uk site.
+
+All in all, a sobering lesson how easy it is to get the numbers wrong and how important it is to have a robust method of checking those numbers.
+
+
+ 
+
+
